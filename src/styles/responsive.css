@@ -1,0 +1,174 @@
+@media (min-width: 640px) {
+  .controls {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+  }
+
+  .controls > div {
+    min-width: 145px;
+  }
+
+  .controls .branch-control {
+    grid-column: auto;
+  }
+
+  .form-grid,
+  .item-grid,
+  .grid-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .full-phone {
+    width: auto;
+  }
+
+  .action-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .order-card {
+    grid-template-columns: 1fr auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .layout {
+    display: flex;
+  }
+
+  .mobile-header {
+    display: none;
+  }
+
+  .sidebar {
+    width: 230px;
+    min-height: calc(100 * min(var(--vh, 1vh), 1vh));
+    flex: none;
+  }
+
+  .sidebar-inner {
+    position: sticky;
+    top: 0;
+    padding: 24px 16px;
+  }
+
+  .desktop-brand {
+    display: flex !important;
+  }
+
+  .topbar {
+    padding: 22px 30px;
+  }
+
+  .topbar-inner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .workspace {
+    padding: 28px 30px 80px;
+  }
+
+  .app-footer {
+    padding: 18px 30px;
+  }
+
+  .split-grid {
+    grid-template-columns: minmax(0, 1fr) 300px;
+  }
+
+  .three-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .four-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .review-action {
+    position: static;
+  }
+
+  .action-bar {
+    align-items: center;
+  }
+}
+
+@media (max-width: 899px) {
+  .sidebar {
+    position: fixed;
+    z-index: 30;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(310px, 85vw);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform 0.22s ease, visibility 0s linear 0.22s;
+    box-shadow: 12px 0 30px #0003;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.22s ease;
+  }
+
+  .sidebar-shade.open {
+    position: fixed;
+    z-index: 29;
+    display: block;
+    inset: 0;
+    width: 100%;
+    border: 0;
+    background: #0009;
+  }
+
+  .desktop-brand {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media print {
+  .mobile-header,
+  .sidebar,
+  .topbar,
+  .no-print,
+  .notice,
+  .sidebar-shade {
+    display: none !important;
+  }
+
+  .workspace {
+    padding: 0;
+  }
+
+  .panel {
+    box-shadow: none;
+  }
+
+  body {
+    background: white;
+  }
+
+  .review-action {
+    position: static;
+  }
+}

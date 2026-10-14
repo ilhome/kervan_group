@@ -1,0 +1,79 @@
+.grid-cards,
+.stat-grid,
+.form-grid,
+.split-grid,
+.item-grid {
+  display: grid;
+}
+
+.grid-cards {
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.stat-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.form-grid,
+.split-grid,
+.item-grid {
+  grid-template-columns: 1fr;
+}
+
+.form-grid {
+  gap: 14px;
+}
+
+.split-grid {
+  gap: 16px;
+}
+
+.item-grid {
+  gap: 12px;
+}
+
+.order-card {
+  display: grid;
+  gap: 10px;
+}
+
+.stack {
+  display: grid;
+  gap: 14px;
+}
+
+.row-between {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.line {
+  padding: 10px 0;
+  border-bottom: 1px solid #ebe3d8;
+}
+
+.action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.small-meta {
+  color: #665d53;
+  font-size: 13px;
+}
+
+.item-name {
+  font-weight: 800;
+}
+
+.horizontal-safe {
+  max-width: 100%;
+  overflow-x: auto;
+}

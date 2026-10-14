@@ -4,9 +4,9 @@ const today = new Date();
 const dateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
 const starterRecords = [
-  { type: 'branch', branch_id: '1', branch_name: 'Downtown', contact_person: 'Aylin Kaya', delivery_route: 'Central district', active: true },
-  { type: 'branch', branch_id: '2', branch_name: 'Riverside', contact_person: 'Emre Demir', delivery_route: 'Riverside market', active: true },
-  { type: 'branch', branch_id: '3', branch_name: 'Old Town', contact_person: 'Deniz Arslan', delivery_route: 'Old town square', active: true },
+  { type: 'branch', branch_id: '1', branch_name: 'Downtown', contact_person: 'Aylin Kaya', contact_phone: '', delivery_route: 'Central district', active: true },
+  { type: 'branch', branch_id: '2', branch_name: 'Riverside', contact_person: 'Emre Demir', contact_phone: '', delivery_route: 'Riverside market', active: true },
+  { type: 'branch', branch_id: '3', branch_name: 'Old Town', contact_person: 'Deniz Arslan', contact_phone: '', delivery_route: 'Old town square', active: true },
   { type: 'inventory', item_name: 'Chicken döner', category: 'Meat', unit: 'kg', current_stock: 48, reorder_threshold: 20, supplier: 'Anatolia Foods', available: true },
   { type: 'inventory', item_name: 'Beef', category: 'Meat', unit: 'kg', current_stock: 7, reorder_threshold: 12, supplier: 'Anatolia Foods', available: true },
   { type: 'inventory', item_name: 'Flatbread', category: 'Bread', unit: 'pack', current_stock: 36, reorder_threshold: 12, supplier: 'Daily Bakehouse', available: true },
