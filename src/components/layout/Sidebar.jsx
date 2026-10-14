@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { NAV, PERMISSIONS } from '../../utils/appData.js';
 
-export default function Sidebar({ role, view, menuOpen, menuButton, t, navigate, setMenuOpen }) {
+export default function Sidebar({ role, view, menuOpen, menuButton, t, navigate, setMenuOpen, logout }) {
   useEffect(() => {
     if (!menuOpen) return undefined;
 
@@ -52,7 +52,7 @@ export default function Sidebar({ role, view, menuOpen, menuButton, t, navigate,
               <div className="brand-caption">Restaurant · Warehouse</div>
             </div>
           </div>
-          <nav id="main-navigation" aria-label="Main navigation">
+          <nav id="main-navigation" aria-label="Main navigation" className="sidebar-nav">
             {PERMISSIONS[role].map((name) => (
               <button
                 key={name}
@@ -66,9 +66,15 @@ export default function Sidebar({ role, view, menuOpen, menuButton, t, navigate,
               </button>
             ))}
           </nav>
-          <p className="small-meta px-3 mt-8" style={{ color: '#c8beb0' }}>
-            {t('tagline')}
-          </p>
+          <div className="sidebar-footer">
+            <button type="button" className="nav-button logout-button" onClick={logout}>
+              <span className="nav-icon" aria-hidden="true">↩</span>
+              <span>{t('logout')}</span>
+            </button>
+            <p className="small-meta px-3 mt-3" style={{ color: '#c8beb0' }}>
+              {t('tagline')}
+            </p>
+          </div>
         </div>
       </aside>
     </>

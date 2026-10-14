@@ -68,7 +68,20 @@
 }
 
 .sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
   padding: 16px;
+}
+
+.sidebar-nav {
+  flex: 1;
+}
+
+.sidebar-footer {
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav-button {
@@ -90,6 +103,15 @@
 .nav-button.active {
   color: white;
   background: #49312d;
+}
+
+.logout-button {
+  margin-top: 8px;
+  color: #f9d7d0;
+}
+
+.logout-button:hover {
+  background: rgba(236, 94, 74, 0.14);
 }
 
 .nav-button.active {

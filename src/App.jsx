@@ -190,7 +190,7 @@ const Orders = lazy(() => import('./features/orders/Orders.jsx'));
       return <AppProvider value={appContext}><div className="app-frame">
         <div className="layout">
           <Sidebar role={role} view={view} menuOpen={menuOpen} menuButton={menuButton}
-            t={t} navigate={navigate} setMenuOpen={setMenuOpen}/>
+            t={t} navigate={navigate} setMenuOpen={setMenuOpen} logout={logout} />
           <div className="main-area">
             <header className="topbar">
               <div className="topbar-inner">
@@ -201,7 +201,6 @@ const Orders = lazy(() => import('./features/orders/Orders.jsx'));
                       <option value="en">English</option><option value="ko">한국어</option><option value="tr">Türkçe</option>
                     </select>
                   </Field>
-                  <Button variant="secondary" onClick={logout}>{t('logout')}</Button>
                 </div>
               </div>
             </header>

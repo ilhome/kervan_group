@@ -1,4 +1,4 @@
-export const CATEGORIES = ['Meat', 'Bread', 'Vegetables', 'Sauces', 'Dairy', 'Drinks', 'Packaging', 'Cleaning'];
+export const CATEGORIES = ['Meat', 'Bread', 'Vegetables', 'Sauces', 'Dairy', 'Drinks', 'Packaging', 'Fruit', 'Desserts', 'Bakery', 'Cleaning'];
 export const STATES = ['Pending', 'Approved', 'Preparing', 'Ready', 'Dispatched', 'Completed'];
 export const DELIVERY_STATES = ['Assigned', 'Picked up', 'Out for delivery', 'Delivered', 'Exception'];
 
@@ -27,6 +27,9 @@ export const KEYS = {
   Dairy: 'dairy',
   Drinks: 'drinks',
   Packaging: 'packaging',
+  Fruit: 'fruit',
+  Desserts: 'desserts',
+  Bakery: 'bakery',
   Cleaning: 'cleaning',
   Pending: 'pending',
   Approved: 'approvedStatus',
