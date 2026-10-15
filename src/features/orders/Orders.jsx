@@ -34,16 +34,16 @@ export default function Orders() {
   if (step === 'check' || step === 'final') return <OrderReview />;
 
   return (
-    <section>
-      <div className="row-between mb-4">
+    <section className="daily-orders-page">
+      <div className="row-between orders-heading">
         <div>
           <h2>{t(role === 'store' ? 'orderHistory' : 'orderQueue')}</h2>
-          <p className="muted text-sm">{visibleOrders.length} {t('totalOrders')}</p>
+          <p className="orders-count">{visibleOrders.length} {t('totalOrders')}</p>
         </div>
-        <Button className="full-phone" onClick={startOrder}>＋ {t('createOrder')}</Button>
+        <Button className="orders-primary-action" onClick={startOrder}>＋ {t('createOrder')}</Button>
       </div>
       {role === 'store' && <Deadline />}
-      <Card className="form-grid mb-4">
+      <Card className="form-grid orders-filters">
         <Field
           id="filter-date"
           label={t('orderDate')}
@@ -80,7 +80,7 @@ export default function Orders() {
           </select>
         </Field>
       </Card>
-      <div className="stack">
+      <div className="stack orders-list">
         {filtered.map((order) => <OrderCard key={order.__backendId} order={order} />)}
         {!filtered.length && <Card><p className="muted py-5 text-center">{t('noOrders')}</p></Card>}
       </div>

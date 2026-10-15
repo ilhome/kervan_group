@@ -15,7 +15,7 @@ export function Inventory() {
   ));
 
   return (
-    <section>
+    <section className="inventory-page">
       <div className="row-between">
         <div>
           <h2>{t('stockCatalogue')}</h2>
@@ -50,7 +50,7 @@ export function Inventory() {
           </select>
         </Field>
       </Card>
-      <div className="grid-cards three-grid">
+      <div className="grid-cards inventory-grid">
         {filtered.map((item) => <StockCard key={item.__backendId} item={item} />)}
       </div>
       {!filtered.length && <Card>{t('noInventory')}</Card>}

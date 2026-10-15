@@ -31,6 +31,14 @@
   .order-card {
     grid-template-columns: 1fr auto;
   }
+
+  .daily-orders-page .order-summary-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .daily-orders-page .order-view-button {
+    align-self: center;
+  }
 }
 
 @media (min-width: 900px) {
@@ -80,8 +88,23 @@
     grid-template-columns: minmax(0, 1fr) 300px;
   }
 
+  .order-builder-page .order-builder-layout {
+    grid-template-columns: minmax(0, 1fr) 270px;
+  }
+
+  .order-builder-page .order-basket {
+    position: sticky;
+    top: 16px;
+  }
+
   .three-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .inventory-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 18px;
   }
 
   .four-grid {
@@ -94,6 +117,68 @@
 
   .action-bar {
     align-items: center;
+  }
+}
+
+@media (max-width: 639px) {
+  .daily-orders-page .orders-heading {
+    align-items: stretch;
+  }
+
+  .daily-orders-page .orders-primary-action {
+    align-self: flex-start;
+  }
+
+  .daily-orders-page .order-summary-card {
+    padding: 14px;
+  }
+
+  .daily-orders-page .order-view-button {
+    justify-self: start;
+  }
+
+  .order-stage-heading {
+    align-items: flex-start;
+  }
+
+  .daily-orders-page .order-back-button {
+    padding-inline: 9px;
+    font-size: 12px;
+  }
+
+  .daily-orders-page .order-category {
+    padding: 12px;
+  }
+
+  .daily-orders-page .item-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .daily-orders-page .supply-photo {
+    height: 150px;
+  }
+
+  .daily-orders-page .supply-card-heading {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .daily-orders-page .supply-availability {
+    text-align: left;
+  }
+
+  .daily-orders-page .order-submit-bar {
+    justify-content: stretch;
+  }
+
+  .daily-orders-page .order-submit-button {
+    width: 100%;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 899px) {
+  .inventory-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

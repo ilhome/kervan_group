@@ -17,8 +17,8 @@ export default function OrderDetail({order}){
           const change={...order,items_json:JSON.stringify(updated),fulfilment_notes:notes.trim(),status:next||order.status};
           await write('update',change,next?'advance':'detail',t(next?'orderMarked':'detailsSaved'));
         };
-        return <section>
-          <Button variant="ghost" className="mb-4 no-print" onClick={()=>setSelectedOrder(null)}>← {t('backQueue')}</Button>
+        return <section className="daily-orders-page order-detail-page">
+          <Button variant="ghost" className="order-review-back no-print" onClick={()=>setSelectedOrder(null)}>← {t('backQueue')}</Button>
           <div className="row-between mb-4"><div><p className="eyebrow">{t('pickingList')} / {order.order_date}</p>
             <h2>{branchName(order.branch_id)}</h2><p className="small-meta">{t('submitted')}: {formatTime(order.submitted_at)} · {label(order.priority||'Normal')}</p></div>
             <div className="flex flex-wrap items-center gap-2"><Badge>{label(order.status)}</Badge>

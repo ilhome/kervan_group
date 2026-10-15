@@ -3,6 +3,49 @@ const STORAGE_KEY = 'kervan-warehouse-data';
 const today = new Date();
 const dateKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
 
+const inventoryPhotosByCategory = {
+  Meat: '/images/inventory/meat.jpg',
+  Bread: '/images/inventory/bread.jpg',
+  Vegetables: '/images/inventory/vegetables.jpg',
+  Sauces: '/images/inventory/sauce.jpg',
+  Dairy: '/images/inventory/ayran.jpg',
+  Drinks: '/images/inventory/juice.jpg',
+  Packaging: '/images/inventory/packaging.jpg',
+  Fruit: '/images/inventory/fruit.jpg',
+  Desserts: '/images/inventory/baklava.jpg',
+  Bakery: '/images/inventory/bread.jpg',
+  Cleaning: '/images/inventory/cleaning.jpg',
+};
+
+const inventoryPhotosByName = {
+  Patates: '/images/inventory/fries.jpg',
+  Yogurt: '/images/inventory/yogurt.jpg',
+  'Mango lassi': '/images/inventory/smoothie.jpg',
+  'Nar suyu': '/images/inventory/juice.jpg',
+  'Şeftali suyu': '/images/inventory/juice.jpg',
+  'Çeşitli meyve suyu': '/images/inventory/juice.jpg',
+  'Sarı vital çay': '/images/inventory/tea.jpg',
+  Baklava: '/images/inventory/baklava.jpg',
+  'Dubai cookie': '/images/inventory/cookies.jpg',
+  'Dubai chocolate findik': '/images/inventory/cookies.jpg',
+  'Dubai chocolate pistachio': '/images/inventory/cookies.jpg',
+  'Masa peçete': '/images/inventory/napkins.jpg',
+  'Masa peçetesi': '/images/inventory/napkins.jpg',
+  'Küçük kağıt bardak': '/images/inventory/cups.jpg',
+  'Büyük kağıt bardak': '/images/inventory/cups.jpg',
+  'Küçük çay bardağı': '/images/inventory/cups.jpg',
+  'Islak mendil': '/images/inventory/napkins.jpg',
+  'Masa bezi': '/images/inventory/cleaning.jpg',
+  'Surface cleaner': '/images/inventory/cleaning.jpg',
+  'Takeaway boxes': '/images/inventory/packaging.jpg',
+};
+
+const inventoryPhotoFor = (item) => (
+  inventoryPhotosByName[item.item_name]
+  || inventoryPhotosByCategory[item.category]
+  || ''
+);
+
 const menuInventory = [
   { type: 'inventory', item_name: 'Tavuk', category: 'Meat', unit: 'kg', current_stock: 18, reorder_threshold: 12, supplier: 'Local butcher', available: true },
   { type: 'inventory', item_name: 'İskender sos', category: 'Sauces', unit: 'bottle', current_stock: 18, reorder_threshold: 8, supplier: 'Anatolia Foods', available: true },
@@ -86,7 +129,11 @@ const starterRecords = [
   { type: 'setting', setting_key: 'deadline', setting_value: '14:00' },
   { type: 'setting', setting_key: 'delivery_days', setting_value: 'Monday, Tuesday, Wednesday, Thursday, Friday' },
   { type: 'setting', setting_key: 'default_language', setting_value: 'en' },
-].map((record, index) => ({ ...record, __backendId: `starter-${index + 1}` }));
+].map((record, index) => ({
+  ...record,
+  ...(record.type === 'inventory' && !record.item_photo ? { item_photo: inventoryPhotoFor(record) } : {}),
+  __backendId: `starter-${index + 1}`,
+}));
 
 function readRecords() {
   const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -100,15 +147,38 @@ function readRecords() {
     throw new Error('Saved warehouse data must be a list of records.');
   }
 
-  const inventoryByName = new Map(
+  const inventoryNames = new Set(
     records
       .filter((record) => record.type === 'inventory')
-      .map((record) => [String(record.item_name).trim().toLowerCase(), record])
+      .map((record) => String(record.item_name).trim().toLowerCase())
+  );
+  const deletedInventoryNames = new Set(
+    records
+      .filter((record) => record.type === 'deleted_inventory')
+      .map((record) => String(record.item_name).trim().toLowerCase())
   );
 
-  const missingInventory = menuInventory.filter((item) => !inventoryByName.has(String(item.item_name).trim().toLowerCase()));
-  if (missingInventory.length) {
-    const merged = [...records, ...missingInventory.map((item, index) => ({ ...item, __backendId: `menu-seed-${Date.now()}-${index}` }))];
+  let photoUpdates = false;
+  const updatedRecords = records.map((record) => {
+    if (record.type !== 'inventory' || record.item_photo || record.item_photo_removed) return record;
+    const item_photo = inventoryPhotoFor(record);
+    if (!item_photo) return record;
+    photoUpdates = true;
+    return { ...record, item_photo };
+  });
+  const missingInventory = menuInventory.filter((item) => {
+    const name = String(item.item_name).trim().toLowerCase();
+    return !inventoryNames.has(name) && !deletedInventoryNames.has(name);
+  });
+  if (missingInventory.length || photoUpdates) {
+    const merged = [
+      ...updatedRecords,
+      ...missingInventory.map((item, index) => ({
+        ...item,
+        item_photo: item.item_photo || inventoryPhotoFor(item),
+        __backendId: `menu-seed-${Date.now()}-${index}`,
+      })),
+    ];
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
     return merged;
   }
@@ -141,7 +211,12 @@ const dataSdk = {
       ...record,
       __backendId: record.__backendId || `record-${globalThis.crypto.randomUUID()}`,
     };
-    persist([...records, next]);
+    const nextRecords = [...records.filter((item) => !(
+      record.type === 'inventory'
+      && item.type === 'deleted_inventory'
+      && String(item.item_name).trim().toLowerCase() === String(record.item_name).trim().toLowerCase()
+    )), next];
+    persist(nextRecords);
     return { isOk: true };
   },
 
@@ -153,6 +228,26 @@ const dataSdk = {
 
     const next = records.slice();
     next[index] = record;
+    persist(next);
+    return { isOk: true };
+  },
+
+  async delete(record) {
+    const index = records.findIndex((item) => item.__backendId === record.__backendId);
+    if (index === -1) {
+      return { isOk: false };
+    }
+
+    const next = records.filter((item) => item.__backendId !== record.__backendId);
+    if (record.type === 'inventory' && menuInventory.some((item) => (
+      String(item.item_name).trim().toLowerCase() === String(record.item_name).trim().toLowerCase()
+    ))) {
+      next.push({
+        type: 'deleted_inventory',
+        item_name: record.item_name,
+        __backendId: `deleted-menu-${globalThis.crypto.randomUUID()}`,
+      });
+    }
     persist(next);
     return { isOk: true };
   },
